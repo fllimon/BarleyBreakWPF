@@ -28,7 +28,16 @@ namespace BarleyBreakWpf.Pages
 
             _gameField = new GameField();
             _gameField.RePrint += Print;
+            _gameField.Winned += Win;
             _gameField.InitializeGameField();
+        }
+
+        private void Win(object sender, bool isWin)
+        {
+            if (isWin)
+            {
+                _winMenu.Visibility = Visibility.Visible;
+            }
         }
 
         private void Print(object sender, int[,] obj)
@@ -55,6 +64,11 @@ namespace BarleyBreakWpf.Pages
             int knucklesNumber = (int)border.DataContext;
 
             _gameField.Press(knucklesNumber);
+        }
+
+        private void RestartGame(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
