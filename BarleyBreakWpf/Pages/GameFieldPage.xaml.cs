@@ -68,7 +68,8 @@ namespace BarleyBreakWpf.Pages
 
         private void RestartGame(object sender, RoutedEventArgs e)
         {
-
+            _gameField.InitializeGameField();
+            _winMenu.Visibility = Visibility.Collapsed;
         }
     }
 }
