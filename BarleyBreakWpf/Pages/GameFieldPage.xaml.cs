@@ -46,6 +46,7 @@ namespace BarleyBreakWpf.Pages
             }
 
             _data.ItemsSource = gameField;
+            _dataText.Text = "Step: " + _gameField.Step.ToString();
         }
 
         private void MouseDownClick(object sender, MouseButtonEventArgs e)

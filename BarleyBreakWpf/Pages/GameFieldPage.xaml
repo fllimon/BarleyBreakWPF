@@ -13,6 +13,12 @@
         <local:OpacityConverter x:Key="_cnv"/>
     </Page.Resources>
     <Grid>
+        <Label VerticalAlignment="Top"
+               HorizontalAlignment="Right">
+            <TextBlock x:Name="_dataText"
+                       FontSize="30"
+                       Margin="10"/>
+        </Label>
         <ItemsControl x:Name="_data"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center">
