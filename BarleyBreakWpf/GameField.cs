@@ -33,7 +33,7 @@ namespace BarleyBreakWpf
             {
                 for (int j = 0; j < DefaultSettings.DEFAULT_HEIGHT; j++)
                 {
-                    _gameField[i, j] = (i * 4 + j + 1) % DefaultSettings.DEVIDER;
+                    _gameField[i, j] = (i * DefaultSettings.DEFAULT_WHIDTH + j + 1) % DefaultSettings.DEVIDER;
                 }
             }
 
@@ -42,9 +42,9 @@ namespace BarleyBreakWpf
 
         private Coordinate FindEmtyKnuckle(int knuckle = DefaultSettings.EMPTY_KNUCKLE)
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < DefaultSettings.DEFAULT_WHIDTH; i++)
             {
-                for (int j = 0; j < 4; j++)
+                for (int j = 0; j < DefaultSettings.DEFAULT_HEIGHT; j++)
                 {
                     if (_gameField[i,j] == knuckle)
                     {
@@ -117,7 +117,7 @@ namespace BarleyBreakWpf
         {
             Coordinate empty = FindEmtyKnuckle();
 
-            if (empty.X < 4)
+            if (empty.X < DefaultSettings.DEFAULT_WHIDTH)
             {
                 Swap(ref _gameField[empty.X, empty.Y], ref _gameField[empty.X + 1, empty.Y]);
                 _step++;
@@ -139,7 +139,7 @@ namespace BarleyBreakWpf
         {
             Coordinate empty = FindEmtyKnuckle();
 
-            if (empty.Y < 4)
+            if (empty.Y < DefaultSettings.DEFAULT_HEIGHT)
             {
                 Swap(ref _gameField[empty.X, empty.Y], ref _gameField[empty.X, empty.Y - 1]);
                 _step++;
