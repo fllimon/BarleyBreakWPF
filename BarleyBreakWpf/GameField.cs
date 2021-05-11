@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace BarleyBreakWpf
 {
-    class GameField
+    class GameField : IGameField
     {
         private int[,] _gameField;
         private int _step = -1;
@@ -22,9 +22,9 @@ namespace BarleyBreakWpf
 
         public int Step => _step;
 
-        public EventHandler<int[,]> RePrint { get; internal set; }
+        public EventHandler<int[,]> RePrint { get; set; }
 
-        public EventHandler<bool> Winned { get; internal set; }
+        public EventHandler<bool> Winned { get; set; }
 
         public int this[int i, int j]
         {
@@ -43,6 +43,7 @@ namespace BarleyBreakWpf
 
             MixKnuckles();
             _step = 0;
+            _isWin = false;
 
             RePrint(this, _gameField);
         }

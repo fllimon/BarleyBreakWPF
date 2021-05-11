@@ -20,7 +20,7 @@ namespace BarleyBreakWpf.Pages
     /// </summary>
     public partial class GameFieldPage : Page
     {
-        private GameField _gameField;
+        private IGameField _gameField;
 
         public GameFieldPage()
         {

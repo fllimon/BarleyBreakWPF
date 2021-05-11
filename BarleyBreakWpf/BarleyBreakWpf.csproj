@@ -80,6 +80,7 @@
     <Compile Include="Coordinate.cs" />
     <Compile Include="DefaultSettings.cs" />
     <Compile Include="GameField.cs" />
+    <Compile Include="IGameField.cs" />
     <Compile Include="InitializeCommand.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
