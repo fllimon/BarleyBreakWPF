@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,192 +8,285 @@ using System.Windows;
 
 namespace BarleyBreakWpf
 {
-    class GameField : IGameField
+    class GameField : ViewModel, IGameField
     {
-        private int[,] _gameField;
+        private ObservableCollection<Knuckle> _gameField;
         private int _step = -1;
         private Random _rand;
         private bool _isWin = false;
+        private Command _restartGame;
 
-        public GameField(int whidth = DefaultSettings.DEFAULT_WHIDTH, int height = DefaultSettings.DEFAULT_HEIGHT)
+
+        public GameField()
         {
-            _gameField = new int[whidth, height];
+             _gameField = new ObservableCollection<Knuckle>();
             _rand = new Random();
+
         }
 
-        public int Step => _step;
+        public ObservableCollection<Knuckle> Knuckles
+        {
+            get
+            {
+                return _gameField;
+            }
+            private set
+            {
+                _gameField = value;
+            }
+        }
 
-        public EventHandler<int[,]> RePrint { get; set; }
+        public bool IsVisible
+        {
+            get
+            {
+                return _isWin;
+            }
+            private set
+            {
+                _isWin = value;
+
+                OnPropertyChanged(nameof(IsVisible));
+            }
+        }
+
+        public int Step 
+        {
+            get => _step;
+            private set
+            {
+                _step = value;
+
+                OnPropertyChanged(nameof(Step));
+            }
+        }
+
+        public Command RestartGame
+        {
+            get
+            {
+                return _restartGame;
+            }
+        }
 
         public EventHandler<bool> Winned { get; set; }
 
-        public int this[int i, int j]
-        {
-            get { return _gameField[i, j]; }
-        }
-
         public void InitializeGameField()
         {
-            for (int i = 0; i < DefaultSettings.DEFAULT_WHIDTH; i++)
+            for (int i = 0; i < DefaultSettings.DEFAULT_COLLECTION_SIZE; i++)
             {
-                for (int j = 0; j < DefaultSettings.DEFAULT_HEIGHT; j++)
+                var k = i / DefaultSettings.DEVIDER;
+                var j = i % DefaultSettings.DEVIDER;
+                int num = i + 1;
+
+                if (num == DefaultSettings.DEFAULT_COLLECTION_SIZE)
                 {
-                    _gameField[i, j] = (i * DefaultSettings.DEFAULT_WHIDTH + j + 1) % DefaultSettings.DEVIDER;
+                    num = 0;
                 }
+
+                _gameField.Add(new Knuckle(j, k, num));
             }
 
+            _isWin = false;
             MixKnuckles();
             _step = 0;
-            _isWin = false;
-
-            RePrint(this, _gameField);
         }
 
-        private void MixKnuckles()
+
+        private void InitializeNewGame()
         {
-            for (int i = 0; i < DefaultSettings.DEFAULT_MIX_STEP; i++)
-            {
-                switch (_rand.Next(4))
-                {
-                    case 0:
-                        ToLeft();
-                        break;
-                    case 1:
-                        ToRight();
-                        break;
-                    case 2:
-                        ToUp();
-                        break;
-                    case 3:
-                        ToDown();
-                        break;
-                    default:
-                        break;
-                }
-            }
+            InitializeGameField();
+
+            Knuckles = _gameField;
         }
 
         private bool GetWinCombination()
         {
-            for (int i = 0; i < DefaultSettings.DEFAULT_WHIDTH; i++)
+            for (int i = 0; i < DefaultSettings.DEFAULT_COLLECTION_SIZE; i++)
             {
-                for (int j = 0; j < DefaultSettings.DEFAULT_HEIGHT; j++)
+                var k = i / DefaultSettings.DEVIDER;
+                var j = i % DefaultSettings.DEVIDER;
+                
+                if ((_gameField[i].X != (j * DefaultSettings.SIZE_AND_MARGIN)) || 
+                    (_gameField[i].Y != (k * DefaultSettings.SIZE_AND_MARGIN)))
                 {
-                    if (_gameField[i, j] != (i * DefaultSettings.DEFAULT_WHIDTH + j + 1) % DefaultSettings.DEVIDER)
-                    {
-                        return _isWin;
-                    } 
+                    return _isWin;
                 }
             }
 
             return _isWin = true;
         }
 
-        private Coordinate FindEmtyKnuckle(int knuckle = DefaultSettings.EMPTY_KNUCKLE)
+        private Knuckle FindEmtyKnuckle(int knuckle = DefaultSettings.EMPTY_KNUCKLE)
         {
-            for (int i = 0; i < DefaultSettings.DEFAULT_WHIDTH; i++)
+            for (int i = 0; i < 16; i++)
             {
-                for (int j = 0; j < DefaultSettings.DEFAULT_HEIGHT; j++)
+                if(_gameField[i].Number == DefaultSettings.EMPTY_KNUCKLE)
                 {
-                    if (_gameField[i,j] == knuckle)
-                    {
-                        return new Coordinate(i, j);
-                    }
+                    return _gameField[i];
                 }
             }
 
-            return new Coordinate();
+            throw new KeyNotFoundException();
         }
 
-        private void Swap( ref int emptyKnuckles, ref int currentKnuckles)
+        public void ChekDirection(Knuckle currentKnuckleClik)
         {
-            var tmp = emptyKnuckles;
-            emptyKnuckles = currentKnuckles;
-            currentKnuckles = tmp;
-        }
+            Knuckle emptyKnuckle = FindEmtyKnuckle();
 
-        public void Press(int knucklesNumber)
-        {
-            Coordinate emptyKnuckle = FindEmtyKnuckle();
-            Coordinate currentKnuckleClik = FindEmtyKnuckle(knucklesNumber);
+            if (emptyKnuckle.Y == currentKnuckleClik.Y)
+            {
+                ToLeftOrRight(currentKnuckleClik, emptyKnuckle);
+            }
+            else
+            {
+                ToUpOrDown(currentKnuckleClik, emptyKnuckle);
+            }
 
-            ChekDirection(emptyKnuckle, currentKnuckleClik);
             GetWinCombination();
 
             Winned(this, _isWin);
-            RePrint(this, _gameField);
         }
 
-        private void ChekDirection(Coordinate emptyKnuckle, Coordinate currentKnuckleClik)
+        private void ToLeftOrRight(Knuckle currentKnuckleClik, Knuckle emptyKnuckle)
         {
-            if (emptyKnuckle.X == currentKnuckleClik.X)
+            if (emptyKnuckle.X > currentKnuckleClik.X)
             {
-                if (emptyKnuckle.Y < currentKnuckleClik.Y)
+                if (IsEmpty(emptyKnuckle, currentKnuckleClik))
                 {
-                    ToLeft();
-                }
-                else
-                {
-                    ToRight();
+                    currentKnuckleClik.ToRight();
+                    emptyKnuckle.ToLeft();
+                    Step++;
                 }
             }
             else
             {
-                if (emptyKnuckle.Y == currentKnuckleClik.Y)
+                if (IsEmpty(emptyKnuckle, currentKnuckleClik))
                 {
-                    if (emptyKnuckle.X < currentKnuckleClik.X)
+                    currentKnuckleClik.ToLeft();
+                    emptyKnuckle.ToRight();
+                    Step++;
+                }
+            }
+        }
+
+        private void ToUpOrDown(Knuckle currentKnuckleClik, Knuckle emptyKnuckle)
+        {
+            if (emptyKnuckle.Y > currentKnuckleClik.Y)
+            {
+                if (emptyKnuckle.X == currentKnuckleClik.X)
+                {
+                    if (IsEmpty(emptyKnuckle, currentKnuckleClik))
                     {
-                        ToUp();
+                        currentKnuckleClik.ToDown();
+                        emptyKnuckle.ToUp();
+                        Step++;
                     }
-                    else
+                }
+            }
+            else
+            {
+                if (emptyKnuckle.Y < currentKnuckleClik.Y)
+                {
+                    if (emptyKnuckle.X == currentKnuckleClik.X)
                     {
-                        ToDown();
+                        if (IsEmpty(emptyKnuckle, currentKnuckleClik))
+                        {
+                            currentKnuckleClik.ToUp();
+                            emptyKnuckle.ToDown();
+                            Step++;
+                        }
                     }
                 }
             }
         }
 
-        private void ToDown()
+        private bool IsEmpty(Knuckle empty, Knuckle current)
         {
-            Coordinate empty = FindEmtyKnuckle();
-
-            if (empty.X > 0) 
+            if ((current.X - 110 == empty.X) || (current.X + 110 == empty.X) ||
+                (current.Y - 110 == empty.Y) || (current.Y + 110 == empty.Y))
             {
-                Swap(ref _gameField[empty.X - 1, empty.Y], ref _gameField[empty.X, empty.Y]);
-                _step++;
+                return true;
             }
+
+            return false;
         }
 
-        private void ToUp()
+        private Knuckle GetCoordinate(int x, int y)
         {
-            Coordinate empty = FindEmtyKnuckle();
-
-            if (empty.X < 3)
+            for (int i = 0; i < 16; i++)
             {
-                Swap(ref _gameField[empty.X, empty.Y], ref _gameField[empty.X + 1, empty.Y]);
-                _step++;
+                if (x >= 0 && x <= 330 && y >= 0 && y <= 330) 
+                {
+                    if ((_gameField[i].X == x) && (_gameField[i].Y == y))
+                    {
+                        return _gameField[i];
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+
             }
+
+            throw new KeyNotFoundException();
         }
 
-        private void ToLeft()
+        private void MixKnuckles()
         {
-            Coordinate empty = FindEmtyKnuckle();
+            Knuckle empty = FindEmtyKnuckle();
+            Knuckle current = null;
 
-            if (empty.Y < 3)
+            for (int i = 0; i < DefaultSettings.DEFAULT_MIX_STEP; i++)
             {
-                Swap(ref _gameField[empty.X, empty.Y], ref _gameField[empty.X, empty.Y + 1]);
-                _step++;
-            }
-        }
+                switch (_rand.Next(4))
+                {
+                    case 0:
+                        current = GetCoordinate(((empty.X / DefaultSettings.SIZE_AND_MARGIN) - 1) * 
+                                                            DefaultSettings.SIZE_AND_MARGIN, empty.Y);
+                        if (current != null)
+                        {
+                            current.ToRight();
+                            empty.ToLeft();
+                        }
+                        
+                        break;
+                    case 1:
+                        current = GetCoordinate(((empty.X / DefaultSettings.SIZE_AND_MARGIN) + 1) * 
+                                                            DefaultSettings.SIZE_AND_MARGIN, empty.Y);
+                        
+                        if (current != null)
+                        {
+                            current.ToLeft();
+                            empty.ToRight();
+                        } 
 
-        private void ToRight()
-        {
-            Coordinate empty = FindEmtyKnuckle();
+                        break;
+                    case 2:
+                        current = GetCoordinate(empty.X, ((empty.Y / DefaultSettings.SIZE_AND_MARGIN) - 1) * 
+                                                                     DefaultSettings.SIZE_AND_MARGIN);
+                        if (current != null)
+                        {
+                            current.ToDown();
+                            empty.ToUp();
+                        }
+                        
+                        break;
+                    case 3:
+                        current = GetCoordinate(empty.X, ((empty.Y / DefaultSettings.SIZE_AND_MARGIN) + 1) * 
+                                                                     DefaultSettings.SIZE_AND_MARGIN);
 
-            if (empty.Y > 0)
-            {
-                Swap(ref _gameField[empty.X, empty.Y], ref _gameField[empty.X, empty.Y - 1]);
-                _step++;
+                        if (current != null)
+                        {
+                            current.ToUp();
+                            empty.ToDown();
+                        }
+                        
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }

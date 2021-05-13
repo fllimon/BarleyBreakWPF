@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,13 +11,11 @@ namespace BarleyBreakWpf
     {
         void InitializeGameField();
 
-        void Press(int knucklesNumber);
+        ObservableCollection<Knuckle> Knuckles { get; }
 
-        int this[int i, int j] { get; }
+        void ChekDirection(Knuckle currentKnuckleClik);
 
         int Step { get; }
-
-        EventHandler<int[,]> RePrint { get; set; }
 
         EventHandler<bool> Winned { get; set; }
     }

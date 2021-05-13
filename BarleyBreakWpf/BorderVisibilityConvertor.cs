@@ -9,14 +9,20 @@ using System.Windows.Data;
 
 namespace BarleyBreakWpf
 {
-    class OpacityConverter : IValueConverter
+    class BorderVisibilityConvertor : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Knuckle number = (Knuckle)value;
+            bool isVisible = (bool)value;
 
-            return Math.Sign(number.Number);
+            if (!isVisible)
+            {
+                return Visibility.Collapsed;
+            }
+
+            return Visibility.Visible;
         }
+
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {

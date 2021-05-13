@@ -27,9 +27,10 @@ namespace BarleyBreakWpf.Pages
             InitializeComponent();
 
             _gameField = new GameField();
-            _gameField.RePrint += Print;
-            _gameField.Winned += Win;
             _gameField.InitializeGameField();
+            _gameField.Winned += Win;
+
+            DataContext = _gameField;
         }
 
         private void Win(object sender, bool isWin)
@@ -40,36 +41,12 @@ namespace BarleyBreakWpf.Pages
             }
         }
 
-        private void Print(object sender, int[,] obj)
-        {
-            int[][] gameField = new int[4][];
-            
-            for (int i = 0; i < 4; i++)
-            {
-                gameField[i] = new int[4];
-
-                for (int j = 0; j < 4; j++)
-                {
-                    gameField[i][j] = _gameField[i, j];
-                }    
-            }
-
-            _data.ItemsSource = gameField;
-            _dataText.Text = "Step: " + _gameField.Step.ToString();
-        }
-
         private void MouseDownClick(object sender, MouseButtonEventArgs e)
         {
             var border = sender as Border;
-            int knucklesNumber = (int)border.DataContext;
+            var knuckle = border.DataContext as Knuckle;
 
-            _gameField.Press(knucklesNumber);
-        }
-
-        private void RestartGame(object sender, RoutedEventArgs e)
-        {
-            _gameField.InitializeGameField();
-            _winMenu.Visibility = Visibility.Collapsed;
+            _gameField.ChekDirection(knuckle);
         }
     }
 }
