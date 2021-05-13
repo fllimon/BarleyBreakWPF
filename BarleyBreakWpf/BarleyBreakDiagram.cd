@@ -38,11 +38,11 @@
       <FileName>DefaultSettings.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BarleyBreakWpf.GameField">
+  <Class Name="BarleyBreakWpf.GameFieldViewModel">
     <Position X="0.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QABAIAgAAEAAFAAAEACAAIgACAAAAAggIAAAAhhAgAA=</HashCode>
-      <FileName>GameField.cs</FileName>
+      <HashCode>QABAIAgAAEAABAAAEACAAogACAAAAAggIAAAAghAgAA=</HashCode>
+      <FileName>GameFieldViewModel.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>

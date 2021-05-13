@@ -46,26 +46,7 @@
                                         CornerRadius="25"
                                         MouseDown="MouseDownClick"
                                         Opacity="{Binding Converter={StaticResource _cnv}}">
-                        <Border.Triggers>
-                            <EventTrigger RoutedEvent="Border.MouseDown">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="_borderTransform"
-                                                         Storyboard.TargetProperty="X"
-                                                         From="{Binding X}"
-                                                         To="{Binding X}"
-                                                         Duration="0:0:0.4"/>
-                                        <DoubleAnimation Storyboard.TargetName="_borderTransform"
-                                                         Storyboard.TargetProperty="Y"
-                                                         From="{Binding Y}"
-                                                         To="{Binding Y}"
-                                                         Duration="0:0:0.4"/>
-
-
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Border.Triggers>
+                        
                         <Border.RenderTransform>
                             <TranslateTransform x:Name="_borderTransform"
                                                 X="{Binding X}"
@@ -85,7 +66,7 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
         <Border x:Name="_winMenu" Background="#8000"
-                Visibility="{Binding IsVisible, Converter={StaticResource _brdConverter}}">
+                Visibility="{Binding IsWin, Converter={StaticResource _brdConverter}}">
             <Grid>
                 <TextBlock Text="You Win!"
                        Foreground="Yellow"

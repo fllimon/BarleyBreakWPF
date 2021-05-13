@@ -88,7 +88,7 @@
     </Compile>
     <Compile Include="BarleyBreakCommand.cs" />
     <Compile Include="DefaultSettings.cs" />
-    <Compile Include="GameField.cs" />
+    <Compile Include="GameFieldViewModel.cs" />
     <Compile Include="IGameField.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

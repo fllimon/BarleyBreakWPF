@@ -49,6 +49,7 @@ namespace BarleyBreakWpf
             }
         }
 
+        
 
         public int Number => _number;
 

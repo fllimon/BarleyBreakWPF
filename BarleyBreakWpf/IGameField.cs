@@ -16,7 +16,5 @@ namespace BarleyBreakWpf
         void ChekDirection(Knuckle currentKnuckleClik);
 
         int Step { get; }
-
-        EventHandler<bool> Winned { get; set; }
     }
 }

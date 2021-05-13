@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BarleyBreakWpf
 {
-    class ViewModel : INotifyPropertyChanged
+    abstract class ViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
