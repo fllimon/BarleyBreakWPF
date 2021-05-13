@@ -115,7 +115,7 @@ namespace BarleyBreakWpf
 
         private Knuckle FindEmtyKnuckle(int knuckle = DefaultSettings.EMPTY_KNUCKLE)
         {
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < DefaultSettings.DEFAULT_COLLECTION_SIZE; i++)
             {
                 if(_knuckls[i].Number == DefaultSettings.EMPTY_KNUCKLE)
                 {
@@ -197,8 +197,8 @@ namespace BarleyBreakWpf
 
         private bool IsEmpty(Knuckle empty, Knuckle current)
         {
-            if ((current.X - 110 == empty.X) || (current.X + 110 == empty.X) ||
-                (current.Y - 110 == empty.Y) || (current.Y + 110 == empty.Y))
+            if ((current.X - DefaultSettings.COORDINATE_STEP == empty.X) || (current.X + DefaultSettings.COORDINATE_STEP == empty.X) ||
+                (current.Y - DefaultSettings.COORDINATE_STEP == empty.Y) || (current.Y + DefaultSettings.COORDINATE_STEP == empty.Y))
             {
                 return true;
             }
@@ -208,9 +208,10 @@ namespace BarleyBreakWpf
 
         private Knuckle GetCoordinate(int x, int y)
         {
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < DefaultSettings.DEFAULT_COLLECTION_SIZE; i++)
             {
-                if (x >= 0 && x <= 330 && y >= 0 && y <= 330) 
+                if (x >= DefaultSettings.MIN_BORDER && x <= DefaultSettings.MAX_BORDER * DefaultSettings.SIZE_AND_MARGIN && 
+                    y >= DefaultSettings.MIN_BORDER && y <= DefaultSettings.MAX_BORDER * DefaultSettings.SIZE_AND_MARGIN) 
                 {
                     if ((_knuckls[i].X == x) && (_knuckls[i].Y == y))
                     {
@@ -234,7 +235,7 @@ namespace BarleyBreakWpf
 
             for (int i = 0; i < DefaultSettings.DEFAULT_MIX_STEP; i++)
             {
-                switch (_rand.Next(3))
+                switch (_rand.Next(DefaultSettings.RANDOM_STEP))
                 {
                     case 0:
                         current = GetCoordinate(((empty.X / DefaultSettings.SIZE_AND_MARGIN) - 1) * 
