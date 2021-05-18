@@ -26,17 +26,7 @@ namespace BarleyBreakWpf.Pages
             InitializeComponent();
 
             _gameField = new GameFieldViewModel();
-            _gameField.InitializeGameField();
-
             DataContext = _gameField;
-        }
-
-        private void MouseDownClick(object sender, MouseButtonEventArgs e)
-        {
-            var border = sender as Border;
-            var knuckle = border.DataContext as Knuckle;
-
-            _gameField.ChekDirection(knuckle);
         }
     }
 }

@@ -24,6 +24,13 @@ namespace BarleyBreakWpf
 
             InitializeGameField();
 
+            Press = new Command(o => 
+            {
+                Knuckle current = o as Knuckle;
+
+                ChekDirection(current);
+            });
+
             RestartGame = new Command(o =>
             {
                 InitializeNewGame();

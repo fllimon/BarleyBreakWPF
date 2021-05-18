@@ -10,7 +10,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="600"
       Background="DarkCyan"
-      DataContext="{StaticResource gameField}"
+      x:Name="_gamePage"
       Title="Barley-Break">
     <Page.Resources>
         <local:OpacityConverter x:Key="_cnv"/>
@@ -44,9 +44,17 @@
                                         Background="Silver"
                                         Width="100"
                                         Height="100"
-                                        MouseDown="MouseDownClick"
                                         CornerRadius="25"
+                                        x:Name="_border"
                                         Opacity="{Binding Converter={StaticResource _cnv}}">
+                        
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDown">
+                                <i:InvokeCommandAction Command="{Binding DataContext.Press, RelativeSource={RelativeSource AncestorType=Page}}" 
+                                                       CommandParameter="{Binding ElementName=_border, Path=DataContext}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        
                         <Border.RenderTransform>
                             <TranslateTransform x:Name="_borderTransform"
                                                 X="{Binding X}"
