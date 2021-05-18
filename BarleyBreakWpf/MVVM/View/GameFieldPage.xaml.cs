@@ -21,7 +21,6 @@ namespace BarleyBreakWpf.Pages
     public partial class GameFieldPage : Page
     {
         private IGameField _gameField;
-
         public GameFieldPage()
         {
             InitializeComponent();

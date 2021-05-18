@@ -74,10 +74,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BorderVisibilityConvertor.cs" />
-    <Compile Include="Command.cs" />
-    <Compile Include="Knuckle.cs" />
-    <Compile Include="ViewModel.cs" />
+    <Compile Include="Convertor\BorderVisibilityConvertor.cs" />
+    <Compile Include="Command\Command.cs" />
+    <Compile Include="MVVM\ViewModel\Knuckle.cs" />
+    <Compile Include="MVVM\ViewModel\ViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -86,22 +86,21 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BarleyBreakCommand.cs" />
-    <Compile Include="DefaultSettings.cs" />
-    <Compile Include="GameFieldViewModel.cs" />
-    <Compile Include="IGameField.cs" />
+    <Compile Include="Const\DefaultSettings.cs" />
+    <Compile Include="MVVM\ViewModel\GameFieldViewModel.cs" />
+    <Compile Include="MVVM\ViewModel\IGameField.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Pages\GameFieldPage.xaml">
+    <Page Include="MVVM\View\GameFieldPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OpacityConverter.cs" />
-    <Compile Include="Pages\GameFieldPage.xaml.cs">
+    <Compile Include="Convertor\OpacityConverter.cs" />
+    <Compile Include="MVVM\View\GameFieldPage.xaml.cs">
       <DependentUpon>GameFieldPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -131,5 +130,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

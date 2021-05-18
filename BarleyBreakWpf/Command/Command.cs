@@ -9,7 +9,7 @@ namespace BarleyBreakWpf
 {
     class Command : ICommand
     {
-        private Action _execute;
+        private Action<object> _execute;
         private Func<object, bool> _canExecute;
 
         public event EventHandler CanExecuteChanged
@@ -18,7 +18,7 @@ namespace BarleyBreakWpf
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public Command(Action execute, Func<object, bool> canExecute = null)
+        public Command(Action<object> execute, Func<object, bool> canExecute = null)
         {
             _execute = execute;
             _canExecute = canExecute;
@@ -31,7 +31,7 @@ namespace BarleyBreakWpf
 
         public void Execute(object parameter)
         {
-            _execute.Invoke();
+            _execute(parameter);
         }
     }
 }

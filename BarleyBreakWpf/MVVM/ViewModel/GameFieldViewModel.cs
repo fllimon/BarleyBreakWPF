@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace BarleyBreakWpf
@@ -15,14 +16,23 @@ namespace BarleyBreakWpf
         private int _step = -1;
         private Random _rand;
         private bool _isWin = false;
-        private Command _restartGame;
-
-
+        
         public GameFieldViewModel()
         {
              _knuckls = new ObservableCollection<Knuckle>();
             _rand = new Random();
-            _restartGame = new Command(InitializeNewGame);
+
+            InitializeGameField();
+
+            RestartGame = new Command(o =>
+            {
+                InitializeNewGame();
+            });
+
+            Exit = new Command(o =>
+            {
+                Environment.Exit(0);
+            });
         }
 
         public ObservableCollection<Knuckle> Knuckles
@@ -63,7 +73,12 @@ namespace BarleyBreakWpf
             }
         }
 
-        public ICommand RestartGame => _restartGame;
+        public ICommand Press { get; set; }
+
+        public ICommand RestartGame { get; set; }
+
+        public ICommand Exit { get; set; }
+
 
         public void InitializeGameField()
         {

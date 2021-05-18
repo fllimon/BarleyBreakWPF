@@ -10,6 +10,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="600"
       Background="DarkCyan"
+      DataContext="{StaticResource gameField}"
       Title="Barley-Break">
     <Page.Resources>
         <local:OpacityConverter x:Key="_cnv"/>
@@ -43,10 +44,9 @@
                                         Background="Silver"
                                         Width="100"
                                         Height="100"
-                                        CornerRadius="25"
                                         MouseDown="MouseDownClick"
+                                        CornerRadius="25"
                                         Opacity="{Binding Converter={StaticResource _cnv}}">
-                        
                         <Border.RenderTransform>
                             <TranslateTransform x:Name="_borderTransform"
                                                 X="{Binding X}"
@@ -87,7 +87,8 @@
                     <Button Content="Exit"
                             FontSize="25"
                             Style="{DynamicResource MahApps.Styles.Button}"
-                            Margin="20"/>
+                            Margin="20"
+                            Command="{Binding Exit}"/>
                 </StackPanel>
             </Grid>
         </Border>

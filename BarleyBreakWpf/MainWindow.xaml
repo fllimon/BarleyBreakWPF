@@ -24,6 +24,7 @@
                     Style="{DynamicResource MahApps.Styles.Button}">
             </Button>
         </Grid>
+        
         <Frame x:Name="_frame" NavigationUIVisibility="Hidden"/>
     </Grid>
 </mah:MetroWindow>
